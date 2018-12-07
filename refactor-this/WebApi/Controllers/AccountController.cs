@@ -1,14 +1,16 @@
 ﻿using DataAccess;
 using System;
 using System.Configuration;
+using System.IO;
 using System.Web.Http;
 
 namespace WebApi.Controllers
 {
     public class AccountController : ApiController
     {
-        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["AccountsDatabase"].ConnectionString;
-
+        private readonly static string _baseDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @".."));
+        private readonly string _connectionString = ConfigurationManager.ConnectionStrings["AccountsDatabase"].ConnectionString.Replace("~", _baseDirectory);
+            
         [HttpGet, Route("api/Accounts/{id}")]
         public IHttpActionResult GetById(Guid id)
         {
